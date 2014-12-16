@@ -7,14 +7,13 @@
 	var colourStyle;
 	var colourCode;
 	
-	
 	function updateScene()
 	{
 		updateTime();
 		updateColours();
 		updateText();
 
-		setTimeout(updateScene, 500);
+		setTimeout(updateScene, 100);
 	}
 	
 	function updateTime()
@@ -36,9 +35,9 @@
 	
 	function updateColours()
 	{
-		var red = hours * (248 / 24);
-		var green = minutes * (240 / 60);
-		var blue = seconds * (240 / 60);
+		var red = Math.round(hours * (248 / 24));
+		var green = Math.round(minutes * (240 / 60));
+		var blue = Math.round(seconds * (240 / 60));
 		
 		colourCode = rgbToHex(red, green, blue);
 		
@@ -53,7 +52,7 @@
 	
 	function pad10(value)
 	{
-		return value.length == 1 ? "0" + value : value;
+		return value < 10 ? "0" + value : value;
 	}
 	
 	function componentToHex(component)
