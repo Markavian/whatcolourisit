@@ -1,5 +1,8 @@
 (function() {
 	
+	var timeZoneOffset;
+	var localTimeZoneOffset;
+	
 	var hours;
 	var minutes;
 	var seconds;
@@ -58,15 +61,14 @@
 	
 	function updateTime()
 	{
-		var timeOffsetHours = parseInt(currentElement.getAttribute("timeOffsetHours"));
-		timeOffsetHours = timeOffsetHours ? timeOffsetHours : 0;
-		
-		var timeOffsetMinutes = parseInt(currentElement.getAttribute("timeOffsetMinutes"));
-		timeOffsetMinutes = timeOffsetMinutes ? timeOffsetMinutes : 0;
-		
 		var date = new Date();
-		date.setHours(date.getHours() + timeOffsetHours);
-		date.setMinutes(date.getMinutes() + timeOffsetMinutes);
+		
+		localTimeZoneOffset = date.getTimezoneOffset();
+		
+		timeZoneOffset = parseInt(currentElement.getAttribute("timeZoneOffset")) + localTimeZoneOffset;
+		timeZoneOffset = timeZoneOffset ? timeZoneOffset : 0;
+		
+		date.setMinutes(date.getMinutes() + timeZoneOffset);
 		
 		hours = date.getHours();
 		minutes = date.getMinutes();
@@ -82,7 +84,9 @@
 		colourCodeBox.innerHTML = colourCode;
 		
 		var labelBox = getFirstElementByTagName("label",  currentElement);
-		labelBox.innerHTML = currentElement.getAttribute("label");
+		var labelText = currentElement.getAttribute("label");
+		labelText = labelText ? labelText : "Local Timezone Offset: " + localTimeZoneOffset;
+		labelBox.innerHTML = labelText;
 	}
 	
 	function updateColours()
