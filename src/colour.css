@@ -50,7 +50,8 @@ whatcolourisit > box {
 
 whatcolourisit > box > time,
 whatcolourisit > box > colourCode,
-whatcolourisit > box > label {
+whatcolourisit > box > label,
+whatcolourisit > box > timezone {
 	font-weight: 500;
 	color: white;
 	font-family: sans-serif;
@@ -65,4 +66,7 @@ whatcolourisit > box > colourCode {
 }
 whatcolourisit > box > label {
 	font-size: 24px;
+}
+whatcolourisit > box > timezone {
+	font-size: 18px;
 }

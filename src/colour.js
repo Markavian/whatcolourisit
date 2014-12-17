@@ -39,11 +39,13 @@
 		var time = document.createElement("time");
 		var colourCode = document.createElement("colourCode");
 		var label = document.createElement("label");
+		var timezone = document.createElement("timezone");
 		
 		element.appendChild(box);
 		box.appendChild(time);
 		box.appendChild(colourCode);
 		box.appendChild(label);
+		box.appendChild(timezone);
 		
 		updateScene(element);
 	}
@@ -85,8 +87,15 @@
 		
 		var labelBox = getFirstElementByTagName("label",  currentElement);
 		var labelText = currentElement.getAttribute("label");
-		labelText = labelText ? labelText : "Local Timezone Offset: " + localTimeZoneOffset;
+		labelText = labelText ? labelText : "Local Time";
 		labelBox.innerHTML = labelText;
+		
+		var displayZoneOffset = Math.abs(timeZoneOffset) > 0 ? timeZoneOffset : localTimeZoneOffset; 
+		var timeZonePrefix = "GMT " + ((displayZoneOffset > 0) ? "+" : "");
+		var timeZoneLabel = timeZonePrefix + Math.floor(displayZoneOffset / 60) + "h " + pad10(displayZoneOffset % 60) + "";
+		
+		var timeZoneBox = getFirstElementByTagName("timezone",  currentElement);
+		timeZoneBox.innerHTML = timeZoneLabel;
 	}
 	
 	function updateColours()
