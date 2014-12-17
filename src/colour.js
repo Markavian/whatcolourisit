@@ -4,21 +4,70 @@
 	var minutes;
 	var seconds;
 	
+	var currentElement;
 	var colourStyle;
 	var colourCode;
 	
-	function updateScene()
+	function setup()
 	{
+		var elements = document.getElementsByTagName("whatcolourisit");
+		for(var i=0; i<elements.length; i++)
+		{
+			var element = elements[i];
+			createFor(element);
+		}
+		
+		createStyleSheet("colour.css");
+	}
+	
+	function createStyleSheet(filename)
+	{
+		var cssLink = document.createElement("link");
+		cssLink.setAttribute("rel", "stylesheet")
+		cssLink.setAttribute("type", "text/css")
+		cssLink.setAttribute("href", filename)
+		
+		getFirstElementByTagName("head").appendChild(cssLink);
+	}
+	
+	function createFor(element)
+	{
+		var box = document.createElement("box");
+		var time = document.createElement("time");
+		var colourCode = document.createElement("colourCode");
+		var label = document.createElement("label");
+		
+		element.appendChild(box);
+		box.appendChild(time);
+		box.appendChild(colourCode);
+		box.appendChild(label);
+		
+		updateScene(element);
+	}
+	
+	function updateScene(element)
+	{
+		currentElement = element;
+		
 		updateTime();
 		updateColours();
 		updateText();
 
-		setTimeout(updateScene, 100);
+		setTimeout(updateScene, 100, element);
 	}
 	
 	function updateTime()
 	{
+		var timeOffsetHours = parseInt(currentElement.getAttribute("timeOffsetHours"));
+		timeOffsetHours = timeOffsetHours ? timeOffsetHours : 0;
+		
+		var timeOffsetMinutes = parseInt(currentElement.getAttribute("timeOffsetMinutes"));
+		timeOffsetMinutes = timeOffsetMinutes ? timeOffsetMinutes : 0;
+		
 		var date = new Date();
+		date.setHours(date.getHours() + timeOffsetHours);
+		date.setMinutes(date.getMinutes() + timeOffsetMinutes);
+		
 		hours = date.getHours();
 		minutes = date.getMinutes();
 		seconds = date.getSeconds();
@@ -26,11 +75,14 @@
 	
 	function updateText()
 	{
-		var timeBox = getFirstElementByTagName("time");
+		var timeBox = getFirstElementByTagName("time", currentElement);
 		timeBox.innerHTML = pad10(hours) + ":" + pad10(minutes) + ":" + pad10(seconds);
 		
-		var colourBox = getFirstElementByTagName("colourCode");
-		colourBox.innerHTML = colourCode;
+		var colourCodeBox = getFirstElementByTagName("colourCode",  currentElement);
+		colourCodeBox.innerHTML = colourCode;
+		
+		var labelBox = getFirstElementByTagName("label",  currentElement);
+		labelBox.innerHTML = currentElement.getAttribute("label");
 	}
 	
 	function updateColours()
@@ -41,13 +93,16 @@
 		
 		colourCode = rgbToHex(red, green, blue);
 		
-		var body = getFirstElementByTagName("body");
-		background = body.style.background = colourCode;
+		var background = currentElement;
+		background.style.background = colourCode;
 	}
 	
-	function getFirstElementByTagName(name)
+	function getFirstElementByTagName(name, context)
 	{
-		return document.getElementsByTagName(name)[0];
+		if(!context)
+			context = document;
+			
+		return context.getElementsByTagName(name)[0];
 	}
 	
 	function pad10(value)
@@ -58,7 +113,7 @@
 	function componentToHex(component)
 	{
 		var hex = component.toString(16);
-		return pad10(hex);
+		return hex.length == 1 ? "0" + hex : hex;
 	}
 
 	function rgbToHex(r, g, b)
@@ -66,5 +121,5 @@
 		return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 	}
 	
-	updateScene();
+	setup();
 })();

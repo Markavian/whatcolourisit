@@ -4,42 +4,14 @@
 	<meta charset="utf-8" />
 	<title>What Colour Is It - mkv25.net version</title>
 	<meta name="description" value="Based on http://whatcolourisit.scn9a.org/" />
-	<style>
-	body {
-		text-align: center;
-	}
-	box {
-		display: block;
-		height: 100px;
-		margin: auto;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		position: absolute;
-		background: rgba(0, 0, 0, 0.1);
-		padding: 10px;
-	}
-	time, colourCode {
-		font-weight: 500;
-		color: white;
-		text-transform: uppercase;
-		font-family: sans-serif;
-		display: block;
-	}
-	time {
-		font-size: 48px;
-	}
-	colourCode {
-		font-size: 36px;
-	}
-	</style>
 </head>
 <body>
-<box>
-	<time>Loading</time>
-	<colourCode>Loading</colourCode>
-</box>
+<whatcolourisit class="fullscreen" label="The time now"></whatcolourisit>
+<div style="position: absolute; top: 50%; text-align: center; width: 100%;">
+	<whatcolourisit class="block" label="Australia" timeOffsetHours="11"></whatcolourisit>
+	<whatcolourisit class="block" label="New York" timeOffsetHours="-5"></whatcolourisit>
+	<whatcolourisit class="block" label="India" timeOffsetHours="5" timeOffsetMinutes="30"></whatcolourisit>
+</div>
 <script src="colour.js" type="text/javascript"></script>
 </body>
 </html>
